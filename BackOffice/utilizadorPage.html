@@ -1,0 +1,488 @@
+<html>
+<head>
+
+
+<style>
+
+body {
+  background: #ffea92;
+  margin: 0;
+  font-family: "Open Sans", Helvetica Neue, Helvetica, Arial, sans-serif;
+  color: #fff;
+  padding-left: 240px;
+}
+main {
+  position: relative;
+  height: 100vh;
+}
+main .helper {
+  background: rgba(0, 0, 0, 0.2);
+  color: #ffea92;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  padding: 1.2em 2em;
+  text-align: center;
+  border-radius: 20px;
+  font-size: 2em;
+  font-weight: bold;
+}
+main .helper span {
+  color: rgba(0, 0, 0, 0.2);
+  font-size: 0.4em;
+  display: block;
+}
+.menu {
+  background: #5bc995;
+  height: 100vh;
+  width: 240px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  outline: none;
+}
+.menu .avatar {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 2em 0.5em;
+  text-align: center;
+}
+.menu .avatar img {
+  width: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #ffea92;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2);
+}
+.menu ul {
+  list-style: none;
+  padding: 0.5em 0;
+  margin: 0;
+}
+.menu ul li {
+  padding: 0.5em 1em 0.5em 3em;
+  font-size: 0.95em;
+  font-weight: regular;
+  background-repeat: no-repeat;
+  background-position: left 15px center;
+  background-size: auto 20px;
+  transition: all 0.15s linear;
+  cursor: pointer;
+}
+.menu ul li.icon-dashboard {
+  background-image: url("http://www.entypo.com/images//gauge.svg");
+}
+.menu ul li.icon-customers {
+  background-image: url("http://www.entypo.com/images//briefcase.svg");
+}
+.menu ul li.icon-users {
+  background-image: url("http://www.entypo.com/images//users.svg");
+}
+.menu ul li.icon-settings {
+  background-image: url("http://www.entypo.com/images//tools.svg");
+}
+.menu ul li:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.menu ul li:focus {
+  outline: none;
+}   
+#addUtilText {
+
+  font-size: 30px;
+  text-align: center;
+  color: black;
+}
+p{
+    border: 1;
+    color: black;
+    text-decoration-style: solid;
+    } 
+header{
+    cursor: pointer;
+    }
+#formAddTags{
+
+  font-size: 20px;
+  text-align: center;
+  color: black; 
+}
+input{
+        width: 470px;
+        height: 50px;
+        padding: 0px 15px 0px 15px;
+
+}
+input:focus{
+        outline-color: #5bc995;
+    }
+select:focus{
+        outline: none;
+        border: 3px solid #2e353d;
+    }
+select{
+
+        width: 470px;
+        height: 50px;
+        padding: 0px 15px 0px 15px;
+        box-sizing: border-box;
+        border-radius: 4px;
+        
+    }
+i {
+  margin-right: 5px;
+}
+</style> 
+
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">     
+
+        <script>
+        var idUtilizador = document.cookie;
+
+        function onLoad(){
+
+        var element = document.getElementById("content");
+        element.innerHTML = "BackOffice Utilizador";
+        }
+        function textChange(text){
+
+        var element = document.getElementById("content");
+        element.innerHTML = text;
+        }
+
+        function addSensor(){
+        var div = document.getElementById("content");
+
+        var html= "<h1 id='addUtilText'>ADICIONAR SENSOR</h1>";
+        html+="<br>";
+        html+= "<input id='nomeSensor' type='text' placeholder='Nome do Sensor'>";
+        html+="<br><br>";
+        html+= "<input onclick='addSensorData();' id='submit' type='button' value='Adicionar Sensor!'>";
+        div.innerHTML = html;
+        }
+        function addSensorData(){
+ var req = new XMLHttpRequest();
+
+        var nome_sensor = document.getElementById("nomeSensor").value;    
+
+        var dadosStr = "&nome_sensor=" + nome_sensor;
+
+        req.onreadystatechange = function(){
+                if(req.readyState == 4 && req.status == 200){
+                    var  x = JSON.parse(req.responseText);
+
+                    var nome_sensor;
+                    for(i=0; i<x.length; i++){      
+
+                    //Tira os dados
+                    util = x[i];
+                    nome_sensor = util.nome_sensor;                    
+                    }
+
+                    if(x == "0"){
+                        addSensorAfterValidation();
+                    }
+                    else{
+                        alert("Sensor já existente");
+                    }
+                }
+            };
+
+                req.open("POST", "http://localhost/PAP/BD/newSensorValidation.php", true);
+                req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                req.send(dadosStr);
+
+        }
+        function addSensorAfterValidation(){
+        var req = new XMLHttpRequest();
+
+        var nome_sensor = document.getElementById("nomeSensor").value;
+            
+        if(nome_sensor == null || nome_sensor == ""){
+             alert("Preencha os Campos Necessários");   
+         }else{
+
+        var dadosStr = "&nome_sensor=" + nome_sensor;
+        dadosStr+= "&idSensorPraia=" + idUtilizador;
+
+        req.open("POST", "http://localhost/PAP/BD/setSensor.php", true);
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.send(dadosStr);
+
+        textChange("Sensor Adicionado com Sucesso");
+
+         }      
+        }
+
+        function editUser(){
+
+        var req = new XMLHttpRequest();
+        var div = document.getElementById("content");
+
+        var html= "<h1 id='addUtilText'>EDITAR UTILIZADOR</h1>";
+        html+="<br>";
+        html+= "<input id='nomeUtilizador' type='text' placeholder='Novo Nome do Utilizador'>";
+        html+= "<input id='passwordUser' type='text' placeholder='Nova Password do Utilizador'>";
+        html+="<br><br>";
+        html+= "<input onclick='editUserSend()' id='submit' type='button' value='Criar!'>";
+        div.innerHTML = html;
+
+        }  
+        function editUserSend(){    
+        var req = new XMLHttpRequest();
+            
+            
+        var nome_utilizador = document.getElementById("nomeUtilizador").value;    
+
+        var dadosStr = "&nome_utilizador=" + nome_utilizador;
+
+        req.onreadystatechange = function(){
+                if(req.readyState == 4 && req.status == 200){
+                    var  x = JSON.parse(req.responseText);
+
+                    var nome_utilizador;
+                    for(i=0; i<x.length; i++){      
+
+                    //Tira os dados
+                    util = x[i];
+                    nome_utilizador = util.nome_utilizador;                    
+                    }
+
+                    if(x == "0"){
+                        editUserAfterValidation();
+                    }
+                    else{
+                        alert("Utilizador já existente");
+                    }
+                }
+            };
+
+                req.open("POST", "http://localhost/PAP/BD/newUserValidation.php", true);
+                req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                req.send(dadosStr);
+        }
+        function editUserAfterValidation(){
+        
+       var req = new XMLHttpRequest();
+
+        var nome_utilizador = document.getElementById("nomeUtilizador").value;
+        var password_utilizador = document.getElementById("passwordUser").value;
+
+         if(nome_utilizador == ("") || password_utilizador == ("")){
+            alert("Preencha os campos necessários");
+        }
+        else{
+        var dadosStr = "&idUtilizador=" + idUtilizador;
+        dadosStr+= "&nome_utilizador=" + nome_utilizador;
+        dadosStr+= "&password_utilizador=" + password_utilizador;
+
+        req.open("POST", "http://localhost/PAP/BD/updateUtilizador.php", true);
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.send(dadosStr);
+
+        textChange("Utilizador Editado com Sucesso");
+        }
+        }     
+
+        function editSensor(){
+
+        var req = new XMLHttpRequest();
+        var div = document.getElementById("content");
+
+        var html= "<h1 id='addUtilText'>EDITAR SENSOR</h1>";
+        html+="<br>";
+        html+= "<select id='selectSensorEdit'>";
+        html+="<option selected='selected' disabled>Selecione um Sensor</option>";
+        html+= "</select>"
+        html+="<br><br>";
+        html+= "<input id='novoNomeSensor' type='text' placeholder='Novo Novo do Sensor'>";
+        html+="<br>"
+        html+="<br><br><br>";
+        html+= "<input onclick='editSensorSend()' type='button' value='Editar Sensor!' id='eliminarSensor'>"
+        div.innerHTML = html;
+
+            var selectDisp = document.getElementById("selectSensorEdit");
+            var sensor;    
+
+                req.onreadystatechange = function(){
+
+                        if(req.readyState == 4 && req.status == 200){
+
+
+                            var y = JSON.parse(req.responseText);
+                             console.log(selectDisp.length);
+
+                            for(i=0; i<y.length; i++){
+                                sensor = y[i];
+                                console.log(y);
+                                var option = document.createElement("option");
+                                option.text=sensor.nome_sensor;
+                                option.value=sensor.id;
+
+                                selectDisp.appendChild(option);
+                            }
+                                         }
+                };
+            req.open("GET", "http://localhost/PAP/BD/getSensores.php?idSensorPraia="+ idUtilizador);
+            req.send();
+        }
+        function editSensorSend(){
+        
+        var req = new XMLHttpRequest();
+
+        var nome_sensor = document.getElementById("novoNomeSensor").value;    
+
+        var dadosStr = "&nome_sensor=" + nome_sensor;
+
+        req.onreadystatechange = function(){
+                if(req.readyState == 4 && req.status == 200){
+                    var  x = JSON.parse(req.responseText);
+
+                    var nome_sensor;
+                    for(i=0; i<x.length; i++){      
+
+                    //Tira os dados
+                    util = x[i];
+                    nome_sensor = util.nome_sensor;                    
+                    }
+
+                    if(x == "0"){
+                        editSensorAfterValidation();
+                    }
+                    else{
+                        alert("Sensor já existente");
+                    }
+                }
+            };
+
+                req.open("POST", "http://localhost/PAP/BD/newSensorValidation.php", true);
+                req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                req.send(dadosStr);
+
+    }
+        function editSensorAfterValidation(){
+        
+        var req = new XMLHttpRequest();
+        var select = document.getElementById("selectSensorEdit");
+        var nome_sensor = document.getElementById("novoNomeSensor").value;
+
+        var valores = select.options[ select.selectedIndex ].value;
+        
+            if(nome_sensor == ("") ){
+            alert("Preencha os campos necessários");
+        }
+        else{
+        var dadosStr = "&idSensor=" + valores;
+        dadosStr+= "&nome_sensor=" + nome_sensor;
+
+        req.open("POST", "http://localhost/PAP/BD/updateSensor.php", true);
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.send(dadosStr);
+
+        textChange("Sensor Editado com Sucesso");
+        }
+        }
+
+
+        function deleteSensor(){
+        var req = new XMLHttpRequest();
+        var div = document.getElementById("content");
+
+        var html= "<h1 id='addUtilText'>ELIMINAR SENSOR</h1>";
+        html+="<br>";
+        html+= "<select id='selectSensorDelete'>";
+        html+="<option selected='selected' disabled>Selecione um Sensor</option>";
+        html+= "</select>"
+        html+="<br><br><br>";
+        html+= "<input onclick='deleteSensorSend()' type='button' value='Eliminar Sensor!' id='eliminarSensor'>"
+        div.innerHTML = html;
+
+
+            var selectDisp = document.getElementById("selectSensorDelete");
+            var sensor;    
+                req.onreadystatechange = function(){
+
+                        if(req.readyState == 4 && req.status == 200){
+
+                            var y = JSON.parse(req.responseText);
+
+                            for(i=0; i<y.length; i++){
+                                sensor = y[i];
+                                var option = document.createElement("option");
+                                option.text=sensor.nome_sensor;
+                                option.value=sensor.id;
+
+                                selectDisp.add(option);
+                            }
+                                         }
+                };
+        req.open("GET", "http://localhost/PAP/BD/getSensores.php?idSensorPraia="+ idUtilizador);
+        req.send();
+
+        }
+        function deleteSensorSend(){
+
+        var req = new XMLHttpRequest();
+        var select = document.getElementById("selectSensorDelete");
+
+        var valores = select.options[ select.selectedIndex ].value;
+        console.log(valores);
+
+        var dadosStr = "&idSensor=" + valores;
+
+        req.open("POST", "http://localhost/PAP/BD/deleteSensor.php", true);
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.send(dadosStr);
+
+        textChange("Sensor Eliminado com Sucesso");
+
+
+        }
+
+
+        function sair(){
+        window.location = "index.html"; 
+
+        }
+        </script>
+
+
+
+<body onload="onLoad()">
+
+    <nav class="menu" tabindex="0">
+
+    <div class="smartphone-menu-trigger"></div>
+
+    <header class="avatar">
+        <a onclick="onLoad()"><img src="logo2.png" /> </a>
+    </header>
+
+    <ul>
+    <center><p> Utilizador </p></center>
+
+    <li onclick="editUser()"><i class="fa fa-edit"></i><span>Editar Utilizador</span></li>
+    <center><p> Sensor </p></center>
+    <li onclick="addSensor()"><i class="fa fa-users"></i><span>Adicionar Sensor</span></li>
+    <li onclick="editSensor()"><i class="fa fa-edit"></i><span>Editar Sensor</span></li>
+    <li onclick="deleteSensor()"><i class="fa fa-eraser"></i><span>Eliminar Sensor</span></li>
+    <br><br><br><br><br><br><br><br><br><br><br><br>
+    <li onclick="sair()"><i class="fa fa-close"></i><span>Sair</span></li>
+    </ul>
+
+    </nav>
+
+    <main>
+    <div class="helper">  
+        <div id="content">
+            </div>
+    </div>
+    </main>
+
+
+
+</body>
+</head>
+</html>

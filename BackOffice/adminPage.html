@@ -1,0 +1,909 @@
+<html>
+<head>
+
+
+<style>
+
+body {
+  background: #ffea92;
+  margin: 0;
+  font-family: "Open Sans", Helvetica Neue, Helvetica, Arial, sans-serif;
+  color: #fff;
+  padding-left: 240px;
+}
+main {
+  position: relative;
+  height: 100vh;
+}
+main .helper {
+  background: rgba(0, 0, 0, 0.2);
+  color: #ffea92;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  padding: 1.2em 2em;
+  text-align: center;
+  border-radius: 20px;
+  font-size: 2em;
+  font-weight: bold;
+}
+.menu {
+  background: #5bc995;
+  height: 100vh;
+  width: 240px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  outline: none;
+}
+.menu .avatar {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 2em 0.5em;
+  text-align: center;
+}
+.menu .avatar img {
+  width: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #ffea92;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2);
+}
+.menu ul {
+  list-style: none;
+  padding: 0.5em 0;
+  margin: 0;
+}
+.menu ul li {
+  padding: 0.5em 1em 0.5em 3em;
+  font-size: 0.95em;
+  font-weight: regular;
+  background-repeat: no-repeat;
+  background-position: left 15px center;
+  background-size: auto 20px;
+  transition: all 0.15s linear;
+  cursor: pointer;
+}
+.menu ul li:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.menu ul li:focus {
+  outline: none;
+}
+p{
+    border: 1;
+    color: black;
+    text-decoration-style: solid;
+    } 
+#addUtilText {
+
+  font-size: 30px;
+  text-align: center;
+  color: black;
+}
+#formAddTags{
+
+  font-size: 20px;
+  text-align: center;
+  color: black; 
+}
+input{
+        width: 470px;
+        height: 50px;
+        padding: 0px 15px 0px 15px;
+
+}
+input:focus{
+        outline: none;
+        border: 2px solid #2e353d;
+}
+header{
+    cursor: pointer;
+    }
+i {
+  margin-right: 5px;
+}
+select:focus{
+        outline: none;
+        border: 2px solid #2e353d;
+    }
+select{
+
+        width: 470px;
+        height: 50px;
+        padding: 0px 15px 0px 15px;
+        box-sizing: border-box;
+        border-radius: 4px;
+        
+    }
+</style> 
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    
+
+    <script>
+
+    function onLoad(){
+
+        var element = document.getElementById("content");
+        element.innerHTML = "BackOffice Administrador";
+    }
+
+    function textChange(text){
+
+        var element = document.getElementById("content");
+        element.innerHTML = text;
+    }
+
+
+    function addPraia(){
+
+        var div = document.getElementById("content");
+        var html= "<h1 id='addUtilText'>ADICIONAR UTILIZADOR</h1>";
+        html+="<br>";
+        html+= "<form id='form' class='topBefore'>";
+        html+= "<input id='nomeUtilizador' type='text' placeholder='Nome'>";
+        html+="<br>";
+        html+= " <input id='password' type='password' placeholder='Password'>";
+        html+="<br>";
+        html+= "<input id='nomePraia' type='text' placeholder='Praia'>";
+        html+= "<select id='selectedTipo'>";
+        html+="<option selected='selected' disabled>Selecione um tipo de utilizador</option>";
+        html+= "<option> Administrador </option>"
+        html+= "<option> Utilizador </option>"
+        html+="<br><br>";
+        html+= "<input onclick='addUser(nomeUtilizador, password, nomePraia)' id='submit' type='button' value='Adicionar Utilizador!'>";
+        html+= "</form>"
+        div.innerHTML = html;  
+
+    }   
+    function addUser(nomeUtilizador, password, nomePraia){
+        var req = new XMLHttpRequest();
+        var nomeUtilizador = document.getElementById("nomeUtilizador").value;
+        var password = document.getElementById("password").value;
+        var nomePraia = document.getElementById("nomePraia").value;
+
+        var dadosStr = "&nome_utilizador=" + nomeUtilizador;
+
+        req.onreadystatechange = function(){
+                if(req.readyState == 4 && req.status == 200){
+                    var  x = JSON.parse(req.responseText);
+
+                    var nome_utilizador;
+                    for(i=0; i<x.length; i++){      
+
+                    //Tira os dados
+                    util = x[i];
+                    nome_utilizador = util.nome_utilizador;                    
+                    }
+
+                    if(x == "0"){
+
+                        var dadosStr2 = "&nome_praia=" + nomePraia;
+                        req.onreadystatechange = function(){
+                        if(req.readyState == 4 && req.status == 200){
+
+                            var  y = JSON.parse(req.responseText);
+
+                            var nome_praia;
+                            for(i=0; i<y.length; i++){     
+
+                                   //Tira os dados
+                            util = y[i];
+                            nome_praia = util.nome_praia; 
+                    }
+                            if(y == "0"){
+                                afterVerification();
+                            }
+                            else{
+                                alert("Praia já existente");
+                            }
+                        }
+     };
+
+                req.open("POST", "http://localhost/PAP/BD/newPraiaValidation.php", true);
+                req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                req.send(dadosStr2);
+                    }
+                    else{
+                        alert("Utilizador já existente");
+                    }
+
+                    }
+            };
+
+                req.open("POST", "http://localhost/PAP/BD/newUserValidation.php", true);
+                req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                req.send(dadosStr);
+
+
+
+
+    }
+    function afterVerification(){
+         var req = new XMLHttpRequest();
+
+        var nomeUtilizador = document.getElementById("nomeUtilizador").value;
+        var password = document.getElementById("password").value;
+        var nomePraia = document.getElementById("nomePraia").value;
+        var tipo = document.getElementById("selectedTipo").value;
+
+
+        if(nomeUtilizador == ("") || password == ("")){
+            alert("Preencha os campos necessários");
+        }
+        else{
+                var dadosStr = "&nome_utilizador=" + nomeUtilizador;
+                dadosStr += "&password=" + password;
+                dadosStr += "&nome_praia=" + nomePraia;
+                dadosStr += "&tipo=" + tipo;
+
+                req.open("POST", "http://localhost/PAP/BD/setUtilizador.php", true);
+                req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                req.send(dadosStr);
+
+                textChange("Utilizador Criado com Sucesso");
+        }
+    }    
+
+    function addSensor(){
+        var req = new XMLHttpRequest();
+        var div = document.getElementById("content");
+
+        var html= "<h1 id='addUtilText'>ADICIONAR SENSOR</h1>";
+        html+="<br>";
+        html+= "<select id='selectedPraia'>";
+        html+="<option selected='selected' disabled>Selecione uma Praia</option>";
+        html+="</select>";
+        html+="<br><br><br>";
+        html+= "<input id='nomeSensor' type='text' placeholder='Nome do Sensor'>";
+        html+="<br><br>";
+        html+= "<input onclick='addSensorToPraia();' id='submit' type='button' value='Adicionar Sensor!'>";
+        div.innerHTML = html;
+
+        var select = document.getElementById("selectedPraia");
+        var praia;
+            req.onreadystatechange = function(){
+        if(req.readyState == 4 && req.status == 200){
+          var  x = JSON.parse(req.responseText);
+
+                //Corre o array
+                for(i=0; i<x.length; i++){         
+                    //Tira o nme
+                    praia = x[i];
+                   var option = document.createElement("option"); 
+                   option.text=praia.nome_praia;
+                   option.value = praia.id;
+                    //Mete no select
+                    select.add(option);
+                }
+
+            }
+
+        };
+
+
+        //Ir buscar o JSON para as turmas
+        req.open("GET", "http://localhost/PAP/BD/getPraias.php");
+        req.send();
+    }     
+    function addSensorToPraia(){
+        var req = new XMLHttpRequest();
+
+        var nome_sensor = document.getElementById("nomeSensor").value;    
+
+        var dadosStr = "&nome_sensor=" + nome_sensor;
+
+        req.onreadystatechange = function(){
+                if(req.readyState == 4 && req.status == 200){
+                    var  x = JSON.parse(req.responseText);
+
+                    var nome_sensor;
+                    for(i=0; i<x.length; i++){      
+
+                    //Tira os dados
+                    util = x[i];
+                    nome_sensor = util.nome_sensor;                    
+                    }
+
+                    if(x == "0"){
+                        addSensorAfterValidation();
+                    }
+                    else{
+                        alert("Sensor já existente");
+                    }
+                }
+            };
+
+                req.open("POST", "http://localhost/PAP/BD/newSensorValidation.php", true);
+                req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                req.send(dadosStr);
+
+
+
+    } 
+    function addSensorAfterValidation(){
+
+        var req = new XMLHttpRequest();
+
+        var select = document.getElementById("selectedPraia");
+        var nome_sensor = document.getElementById("nomeSensor").value;  
+        var nome_sensor = document.getElementById("nomeSensor").value;  
+
+
+        var valores = select.options[ select.selectedIndex ].value;
+        console.log(valores);
+
+         if(nome_sensor == null || nome_sensor == ("")){
+                 alert("Preencha os Campos Necessários");   
+             }else{
+
+        var dadosStr = "&nome_sensor=" + nome_sensor;
+        dadosStr+= "&idSensorPraia=" + valores;
+
+        req.open("POST", "http://localhost/PAP/BD/setSensor.php", true);
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.send(dadosStr);
+
+        textChange("Sensor Adicionado com Sucesso");
+
+             }
+    }
+
+    function editUser(){
+
+        var req = new XMLHttpRequest();
+        var div = document.getElementById("content");
+
+        var html= "<h1 id='addUtilText'>EDITAR UTILIZADOR</h1>";
+        html+="<br>";
+        html+= "<select id='selectedUserEdit'>";
+        html+="<option selected='selected' disabled>Selecione um Utilizador</option>";
+        html+="</select>";
+        html+="<br><br><br>";
+        html+= "<input id='nomeUser' type='text' placeholder='Novo Nome do Utilizador'>";
+        html+= "<input id='passwordUser' type='text' placeholder='Nova Password do Utilizador'>";
+        html+="<br><br>";
+        html+= "<input onclick='editUserSend()' id='submit' type='button' value='Editar Utilizador!'>";
+        div.innerHTML = html;
+
+        var select = document.getElementById("selectedUserEdit");
+        var user;
+
+        req.onreadystatechange = function(){
+        if(req.readyState == 4 && req.status == 200){
+          var  x = JSON.parse(req.responseText);
+
+                //Corre o array
+                for(i=0; i<x.length; i++){         
+                    //Tira o nme
+                    user = x[i];
+                   var option = document.createElement("option"); 
+                   option.text=user.nome_utilizador;
+                   option.value = user.id;
+                    //Mete no select
+                    select.add(option);
+                }
+
+            }
+
+        };
+
+
+        //Ir buscar o JSON para as turmas
+        req.open("GET", "http://localhost/PAP/BD/getUtilizadores.php");
+        req.send();
+    }  
+    function editUserSend(){
+        var req = new XMLHttpRequest();
+
+        var nome_utilizador = document.getElementById("nomeUser").value;    
+
+        var dadosStr = "&nome_utilizador=" + nome_utilizador;
+
+        req.onreadystatechange = function(){
+                if(req.readyState == 4 && req.status == 200){
+                    var  x = JSON.parse(req.responseText);
+
+                    var nome_utilizador;
+                    for(i=0; i<x.length; i++){      
+
+                    //Tira os dados
+                    util = x[i];
+                    nome_utilizador = util.nome_utilizador;                    
+                    }
+
+                    if(x == "0"){
+                        afterVerificationEdit();
+                    }
+                    else{
+                        alert("Utilizador já existente");
+                    }
+                }
+            };
+
+                req.open("POST", "http://localhost/PAP/BD/newUserValidation.php", true);
+                req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                req.send(dadosStr);
+
+
+
+
+    }  
+    function afterVerificationEdit(){
+        var req = new XMLHttpRequest();
+
+        var select = document.getElementById("selectedUserEdit");
+        var nome_utilizador = document.getElementById("nomeUser").value;
+        var password_utilizador = document.getElementById("passwordUser").value;
+        var valores = select.options[ select.selectedIndex ].value
+        console.log(valores);
+        console.log(nome_utilizador);
+        console.log(password_utilizador);
+         if(nome_utilizador == ("") || password_utilizador == ("")){
+            alert("Preencha os campos necessários");
+        }
+        else{
+
+        var dadosStr = "&idUtilizador=" + valores;
+        dadosStr+= "&nome_utilizador=" + nome_utilizador;
+        dadosStr+= "&password_utilizador=" + password_utilizador;
+
+        req.open("POST", "http://localhost/PAP/BD/updateUtilizador.php", true);
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.send(dadosStr);
+
+        textChange("Utilizador Editado com Sucesso");
+        }
+    }
+
+
+    function editPraia(){
+
+        var req = new XMLHttpRequest();
+        var div = document.getElementById("content");
+
+        var html= "<h1 id='addUtilText'>EDITAR PRAIA</h1>";
+        html+="<br>";
+        html+= "<select id='selectedPraiaEdit'>";
+        html+="<option selected='selected' disabled>Selecione uma Praia</option>";
+        html+="</select>";
+        html+="<br><br><br>";
+        html+= "<input id='nomePraiaEdit' type='text' placeholder='Novo Nome da Praia'>";
+        html+="<br><br>";
+        html+= "<input onclick='editPraiaSend();' id='submit' type='button' value='Editar Praia!'>";
+        div.innerHTML = html;
+
+        var select = document.getElementById("selectedPraiaEdit");
+        var praia;
+            req.onreadystatechange = function(){
+        if(req.readyState == 4 && req.status == 200){
+          var  x = JSON.parse(req.responseText);
+
+                //Corre o array
+                for(i=0; i<x.length; i++){         
+                    //Tira o nme
+                    praia = x[i];
+                   var option = document.createElement("option"); 
+                   option.text=praia.nome_praia;
+                   option.value = praia.id;
+                    //Mete no select
+                    select.add(option);
+                }
+
+            }
+
+        };
+
+
+        //Ir buscar o JSON para as turmas
+        req.open("GET", "http://localhost/PAP/BD/getPraias.php");
+        req.send();
+
+    }   
+    function editPraiaSend(){
+
+        var req = new XMLHttpRequest();
+
+        var nome_praia = document.getElementById("nomePraiaEdit").value;
+
+       var dadosStr = "&nome_praia=" + nome_praia;
+
+        req.onreadystatechange = function(){
+                if(req.readyState == 4 && req.status == 200){
+                    var  x = JSON.parse(req.responseText);
+
+                    if(x == "0"){
+                        afterVerificationEditPraia();
+                    }
+                    else{
+                        alert("Praia já existente");
+                    }
+                }
+            };
+
+                req.open("POST", "http://localhost/PAP/BD/newPraiaValidation.php", true);
+                req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                req.send(dadosStr);
+
+    }  
+    function afterVerificationEditPraia(){
+
+        var req = new XMLHttpRequest();
+        var nome_praia = document.getElementById("nomePraiaEdit").value;
+        var select = document.getElementById("selectedPraiaEdit");
+
+        var valores = select.options[ select.selectedIndex ].value;
+
+     if(nome_praia == ("")){
+            alert("Preencha os campos necessários");
+        }
+        else{
+        var dadosStr = "&idPraia=" + valores;
+        dadosStr+= "&nome_praia=" + nome_praia;
+
+        req.open("POST", "http://localhost/PAP/BD/updatePraia.php", true);
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.send(dadosStr);
+
+        textChange("Praia Editada com Sucesso");
+        }
+    }
+
+
+    function editSensor(){
+
+        var req = new XMLHttpRequest();
+        var div = document.getElementById("content");
+
+        var html= "<h1 id='addUtilText'>EDITAR SENSOR</h1>";
+        html+="<br>";
+        html += "<select onchange='editSensorSend' id='selectPraiaDelete'>";
+        html+="<option selected='selected' disabled>Selecione uma Praia</option>";
+        html+= "</select>";
+        html+="<br>";
+        html+= "<select id='selectSensorEdit'>";
+        html+="<option selected='selected' disabled>Selecione um Sensor</option>";
+        html+= "</select>"
+        html+="<br><br>";
+        html+= "<input id='novoNomeSensor' type='text' placeholder='Novo Novo do Sensor'>";
+        html+="<br>"
+        html+="<br><br><br>";
+        html+= "<input onclick='editSensorSend()' type='button' value='Editar Sensor!' id='eliminarSensor'>"
+        div.innerHTML = html;
+
+        var select = document.getElementById("selectPraiaDelete");
+        var praia;
+
+        req.onreadystatechange = function(){
+        if(req.readyState == 4 && req.status == 200){
+          var  x = JSON.parse(req.responseText);
+
+                //Corre o array
+                for(i=0; i<x.length; i++){         
+                    //Tira o nme
+                    praia = x[i];
+                    var option = document.createElement("option"); 
+                    option.text=praia.nome_praia;
+                    option.value = praia.id;
+                    //Mete no select
+                    select.add(option);
+                }
+
+
+
+            select.onchange = function(){
+                var selectDisp = document.getElementById("selectSensorEdit");
+                var sensor;
+                var valores = select.options[ select.selectedIndex ].value;
+
+
+                    req.onreadystatechange = function(){
+
+                            if(req.readyState == 4 && req.status == 200){
+
+                                for(z=0; selectDisp.length; z++){
+                                    selectDisp.remove(0);
+                                }
+                                var y = JSON.parse(req.responseText);
+                                 console.log(selectDisp.length);
+
+                                console.log(x);
+                                for(i=0; i<y.length; i++){
+                                    sensor = y[i];
+                                    console.log(y);
+                                    var option = document.createElement("option");
+                                    option.text=sensor.nome_sensor;
+                                    option.value=sensor.id;
+
+                                    selectDisp.appendChild(option);
+                                }
+                                             }
+                    };
+                req.open("GET", "http://localhost/PAP/BD/getSensores.php?idSensorPraia="+ valores);
+                req.send();
+
+            };
+            }
+
+
+
+        };
+
+
+        //Ir buscar o JSON para as turmas
+        req.open("GET", "http://localhost/PAP/BD/getPraias.php");
+        req.send();
+
+    }
+    function editSensorSend(){
+
+        var req = new XMLHttpRequest();
+
+        var nome_sensor = document.getElementById("novoNomeSensor").value;    
+
+        var dadosStr = "&nome_sensor=" + nome_sensor;
+
+        req.onreadystatechange = function(){
+                if(req.readyState == 4 && req.status == 200){
+                    var  x = JSON.parse(req.responseText);
+
+                    var nome_sensor;
+                    for(i=0; i<x.length; i++){      
+
+                    //Tira os dados
+                    util = x[i];
+                    nome_sensor = util.nome_sensor;                    
+                    }
+
+                    if(x == "0"){
+                        editSensorAfterValidation();
+                    }
+                    else{
+                        alert("Sensor já existente");
+                    }
+                }
+            };
+
+                req.open("POST", "http://localhost/PAP/BD/newSensorValidation.php", true);
+                req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                req.send(dadosStr);
+
+    }
+    function editSensorAfterValidation(){
+
+        var req = new XMLHttpRequest();
+        var select = document.getElementById("selectSensorEdit");
+        var nome_sensor = document.getElementById("novoNomeSensor").value;
+
+        var valores = select.options[ select.selectedIndex ].value;
+        console.log(valores);
+     if(nome_sensor == ("")){
+            alert("Preencha os campos necessários");
+        }
+        else{
+
+        var dadosStr = "&idSensor=" + valores;
+        dadosStr+= "&nome_sensor=" + nome_sensor;
+
+        req.open("POST", "http://localhost/PAP/BD/updateSensor.php", true);
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.send(dadosStr);
+
+        textChange("Sensor Editado com Sucesso");
+        }
+
+    }
+
+
+    function deleteUser(){
+
+        var req = new XMLHttpRequest();
+        var div = document.getElementById("content");
+
+        var html= "<h1 id='addUtilText'>ELIMINAR UTILIZADOR</h1>";
+        html+="<br>";
+        html+= "<select id='selectedUserDelete'>";
+        html+="<option selected='selected' disabled>Selecione um Utilizador</option>";
+        html+="</select>";
+        html+="<br><br>";
+        html+= "<input onclick='deleteUserSend()' id='submit' type='button' value='Eliminar Utilizador!'>";
+        div.innerHTML = html;
+
+        var select = document.getElementById("selectedUserDelete");
+        var user;
+
+        req.onreadystatechange = function(){
+        if(req.readyState == 4 && req.status == 200){
+          var  x = JSON.parse(req.responseText);
+
+                //Corre o array
+                for(i=0; i<x.length; i++){         
+                    //Tira o nme
+                    user = x[i];
+                   var option = document.createElement("option"); 
+                   option.text=user.nome_utilizador;
+                   option.value = user.id;
+                    //Mete no select
+                    select.add(option);
+                }
+
+            }
+
+        };
+
+
+        //Ir buscar o JSON para as turmas
+        req.open("GET", "http://localhost/PAP/BD/getUtilizadores.php");
+        req.send();
+    }  
+    function deleteUserSend(){
+
+        var req = new XMLHttpRequest();
+        var select = document.getElementById("selectedUserDelete");
+
+        var valores = select.options[ select.selectedIndex ].value;
+        console.log(valores);
+
+        var dadosStr = "&idUtilizador=" + valores;
+
+        req.open("POST", "http://localhost/PAP/BD/deleteUser.php", true);
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.send(dadosStr);
+
+        textChange("Utilizador Eliminado com Sucesso");
+
+
+    }
+
+
+    function deleteSensor(){
+        var req = new XMLHttpRequest();
+        var div = document.getElementById("content");
+
+        var html= "<h1 id='addUtilText'>ELIMINAR SENSOR</h1>";
+        html+="<br>";
+        html += "<select onchange='deleteUserSend' id='selectPraiaDelete'>";
+        html+="<option selected='selected' disabled>Selecione uma Praia</option>";
+        html+= "</select>";
+        html+="<br>";
+        html+= "<select id='selectSensorDelete'>";
+        html+="<option selected='selected' disabled>Selecione um Sensor</option>";
+        html+= "</select>"
+        html+="<br><br><br>";
+        html+= "<input onclick='deleteSensorSend()' type='button' value='Eliminar Sensor!' id='eliminarSensor'>"
+        div.innerHTML = html;
+
+        var select = document.getElementById("selectPraiaDelete");
+        var praia;
+
+        req.onreadystatechange = function(){
+        if(req.readyState == 4 && req.status == 200){
+          var  x = JSON.parse(req.responseText);
+
+                //Corre o array
+                for(i=0; i<x.length; i++){         
+                    //Tira o nme
+                    praia = x[i];
+                    var option = document.createElement("option"); 
+                    option.text=praia.nome_praia;
+                    option.value = praia.id;
+                    //Mete no select
+                    select.add(option);
+                }
+
+
+
+            select.onchange = function(){
+                var selectDisp = document.getElementById("selectSensorDelete");
+                var sensor;
+                var valores = select.options[ select.selectedIndex ].value;
+
+
+                    req.onreadystatechange = function(){
+
+
+                    for(z=0; selectDisp.length; z++){
+                     selectDisp.remove(0);
+                    }
+                            if(req.readyState == 4 && req.status == 200){
+                                var y = JSON.parse(req.responseText);
+
+                                console.log(x);
+                                for(i=0; i<y.length; i++){
+                                    sensor = y[i];
+                                    console.log(y);
+                                    var option = document.createElement("option");
+                                    option.text=sensor.nome_sensor;
+                                    option.value=sensor.id;
+
+                                    selectDisp.add(option);
+                                }
+                                             }
+                    };
+                req.open("GET", "http://localhost/PAP/BD/getSensores.php?idSensorPraia="+ valores);
+            req.send();
+
+            };
+            }
+
+
+
+        };
+
+
+        //Ir buscar o JSON para as turmas
+        req.open("GET", "http://localhost/PAP/BD/getPraias.php");
+        req.send();
+
+    }  
+    function deleteSensorSend(){
+
+        var req = new XMLHttpRequest();
+        var select = document.getElementById("selectSensorDelete");
+
+        var valores = select.options[ select.selectedIndex ].value;
+        console.log(valores);
+
+        var dadosStr = "&idSensor=" + valores;
+
+        req.open("POST", "http://localhost/PAP/BD/deleteSensor.php", true);
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.send(dadosStr);
+
+        textChange("Sensor Eliminado com Sucesso");
+
+
+    }
+
+
+    function sair(){
+           window.location = "index.html"; 
+
+    }
+
+    </script>
+
+
+
+
+<body onload="onLoad()">
+
+    <nav class="menu" tabindex="0">
+
+    <div class="smartphone-menu-trigger"></div>
+
+    <header class="avatar">
+        <a onclick="onLoad()"><img src="logo2.png" /> </a>
+    </header>
+
+    <ul>
+        <center><p> Utilizador </p></center>
+        <li onclick="addPraia()"><i class="fa fa-users"></i> <span>Adicionar Utilizador</span></li>
+        <li onclick="editUser()"><i class="fa fa-edit"></i> <span>Editar Utilizador</span></li>
+        <li onclick="deleteUser()"><i class="fa fa-eraser"></i><span>Eliminar Utilizador</span></li>
+         <center><p> Praia </p></center>
+        <li onclick="editPraia()"><i class="fa fa-edit"></i><span>Editar Praia</span></li>
+         <center><p> Sensor </p></center>
+        <li onclick="addSensor()"><i class="fa fa-users"></i><span>Adicionar Sensor</span></li>
+        <li onclick="editSensor()"><i class="fa fa-edit"></i><span>Editar Sensor</span></li>
+        <li onclick="deleteSensor()"><i class="fa fa-eraser"></i><span>Eliminar Sensor</span></li>
+        <br><br><br><br>
+        <li onclick="sair()"><i class="fa fa-close"></i><span>Sair</span></li>
+    </ul>
+
+    </nav>
+
+    <main>
+        <div class="helper">  
+        <div id="content">
+            </div>
+        </div>
+    </main>
+
+
+
+    </body>
+</head>
+</html>

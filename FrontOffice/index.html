@@ -1,0 +1,414 @@
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link href='//fonts.googleapis.com/css?family=Anton' rel='stylesheet'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<head>
+    <meta charset="utf-8" />
+</head>
+
+<style>
+    body {
+        font-family: "Lato", sans-serif
+    }
+    
+    .logoTxt {
+    font-family: 'Anton';font-size: 22px;
+}
+    
+    * {
+        box-sizing: border-box
+    }
+    /* Slideshow */
+    
+    .slideshow-container {
+        max-width: 100%;
+        position: relative;
+        margin: auto;
+    }
+    
+    .mySlides {
+        display: none;
+    }
+    /* Next & previous buttons */
+    
+    .prev,
+    .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        margin-top: -22px;
+        padding: 16px;
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+        transition: 0.6s ease;
+        border-radius: 0 3px 3px 0;
+    }
+    /* Position the "next button" to the right */
+    
+    .next {
+        right: 0;
+        border-radius: 3px 0 0 3px;
+    }
+    
+    .prev:hover,
+    .next:hover {
+        background-color: rgb(204, 204, 204);
+    }
+    
+    .numbertext {
+        color: #000000;
+        font-size: 12px;
+        padding: 8px 12px;
+        position: absolute;
+        bottom: 0;
+        left: 48.3%;
+    }
+    
+    .dot {
+        cursor: pointer;
+        height: 13px;
+        width: 13px;
+        margin: 0 2px;
+        background-color: black;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.1s ease;
+    }
+    
+    .active,
+    .dot:hover {
+        background-color: #717171;
+    }
+    
+    .fade {
+        -webkit-animation-name: fade;
+        -webkit-animation-duration: 1.5s;
+        animation-name: fade;
+        animation-duration: 1.5s;
+    }
+    
+    @-webkit-keyframes fade {
+        from {
+            opacity: .4
+        }
+        to {
+            opacity: 1
+        }
+    }
+    
+    @keyframes fade {
+        from {
+            opacity: .4
+        }
+        to {
+            opacity: 1
+        }
+    }
+    
+    .img {
+        float: left;
+        margin-left: 10px;
+    }
+    
+    .text {
+        float: left;
+    }
+    
+    .cor {
+        background-color: floralwhite;
+    }
+    
+    #btnTop {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 30px;
+        z-index: 99;
+        border: none;
+        outline: none;
+        background-color: black;
+        color: white;
+        cursor: pointer;
+        padding: 15px;
+        border-radius: 10px;
+    }
+    
+    #btnTop:hover {
+        background-color: #555;
+        /* Add a dark-grey background on hover */
+    }
+    
+    .footer {
+        position: relative;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 0.2rem;
+        text-align: center;
+    }
+    
+    .chart-container{
+        width: 800px;
+        height: auto;
+    }
+
+</style>
+
+
+<body>
+
+    <!-- NAVBAR -->
+    <div class="w3-top">
+        <div class="w3-bar w3-khaki w3-card-2">
+            <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-opennav w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+            <a href="#" class="w3-bar-item w3-button w3-padding-large"><i class="fa fa-home"></i> HOME</a>
+            <a href="#grafico" class="w3-bar-item w3-button w3-padding-large w3-hide-small"><i class="fa fa-line-chart"></i> LIVE</a>
+            <a href="#promo" class="w3-bar-item w3-button w3-padding-large w3-hide-small"><i class="fa fa-question"></i> O QUE É</a>
+            <a href="#parceria" class="w3-bar-item w3-button w3-padding-large w3-hide-small"><i class="fa fa-group"></i> PARCEIROS</a>
+            <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hide-small"><i class="fa fa-envelope"></i> CONTACTO</a>
+            <a  class="w3-right w3-wide w3-padding-small logoTxt"><i class="fa fa-heartbeat" style="font-size:28px;"></i><b>              SMARTUV  </b></a>
+           
+
+        </div>
+    </div>
+
+
+    <!-- SMALL NAVBAR -->
+    <div id="navDemo" class="w3-navblock w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
+        <a href="#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
+        <a href="#grafico" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LIVE</a>
+        <a href="#promo" class="w3-bar-item w3-button w3-padding-large w3-hide-small">O QUE É</a>
+        <a href="#parceria" class="w3-bar-item w3-button w3-padding-large w3-hide-small">PARCERIA</a>
+        <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACTO</a>
+    </div>
+
+
+    <!-- END NAVBAR -->
+
+    <!-- START -->
+
+    <div class="w3-content" style="max-width:2000px;margin-top:46px">
+
+
+        <!-- SLIDESHOW -->
+
+            <div class="slideshow-container">
+                <div class="mySlides fade">
+                    <div class="numbertext">1 / 3</div>
+                    <img src="beachBanner.jpg" style="   width:100%">
+                </div>
+
+                <div class="mySlides fade">
+                    <div class="numbertext">2 / 3</div>
+                    <img src="cruzteste.png" style="width:100%">
+                </div>
+
+                <div class="mySlides fade">
+                    <div class="numbertext">3 / 3</div>
+                    <img src="ardlogo4.png" style="width:100%">
+                </div>
+
+                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            </div>
+            <br>
+
+            <div style="text-align:center">
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+            </div>
+
+            <!-- slideshow script -->
+            <script>
+                var slideIndex = 1;
+                showSlides(slideIndex);
+
+                function plusSlides(n) {
+                    showSlides(slideIndex += n);
+                }
+
+                function currentSlide(n) {
+                    showSlides(slideIndex = n);
+                }
+
+                function showSlides(n) {
+                    var i;
+                    var slides = document.getElementsByClassName("mySlides");
+                    var dots = document.getElementsByClassName("dot");
+                    if (n > slides.length) {
+                        slideIndex = 1
+                    }
+                    if (n < 1) {
+                        slideIndex = slides.length
+                    }
+                    for (i = 0; i < slides.length; i++) {
+                        slides[i].style.display = "none";
+                    }
+                    for (i = 0; i < dots.length; i++) {
+                        dots[i].className = dots[i].className.replace(" active", "");
+                    }
+                    slides[slideIndex - 1].style.display = "block";
+                    dots[slideIndex - 1].className += " active";
+                }
+
+            </script>
+
+
+
+        <!-- END SLIDESHOW -->
+
+        <!-- GRAPH -->
+        <div class="w3-container w3-content w3-center w3-padding-64 " style="max-width:800px " id="grafico">
+            <BR></BR>
+            <div class="chart-container">
+                <canvas id="mycanvas"></canvas>
+            </div>
+            <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+            <script type="text/javascript" src="js/Chart.min.js"></script>
+            <script type="text/javascript" src="js/linegraph.js"></script>
+            
+            
+            
+            <br>
+            <div class="img"><img src="uv.png" style="width:100%"> </div>
+
+            <!-- graph call -->
+
+            
+        </div>
+        <!-- END GRAPH -->
+
+        <!-- PROMO -->
+
+        <div class="w3-khaki" id="promo">
+            <div class="w3-container w3-content w3-padding-64 " style="max-width:900px ">
+                <h2 class="w3-wide w3-center ">O QUE É</h2>
+
+
+                <div class="w3-row-padding w3-padding-32 " style="margin: -25px">
+                    <!-- O que / Porque? -->
+                    <!-- imagem arduino/sensor -->
+                    <div class="w3-third w3-margin-top">
+                        <div class="img">
+                            <img src="uv_sobre.png" style="width:100% " class="w3-hover-opacity">
+                        </div>
+                    </div>
+                    <div class="w3-row:after">
+                        <br>
+                        <br>
+                        <p><b>A radiação solar e os raios ultravioletas (UV) podem ser prejudiciais á saude podendo causar problemas como cancro da pele, fotoqueratite entre outros.</b></p>
+                        <p>O nosso objectivo é fornecer aos banhistas informacao sobre como se protegerem dos raios UV e uma plataforma de facil acesso para se manterem informados.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- END PROMO -->
+
+
+        <!-- PARCERIA-->
+        <div class="w3-white" id="parceria">
+            <div class="w3-container w3-content w3-padding-64 " style="max-width:900px ">
+                <h2 class="w3-wide w3-center ">Parceiros</h2>
+                <p class="w3-wide w3-opacity w3-center fa-lg"><i><b>  Cruz Vermelha </b></i></p><br>
+
+                <div class="w3-row-padding w3-padding-32" style="margin: -25px">
+                    <!-- Cruz Vermelha -->
+                    <div class="w3-third w3-margin-bottom">
+
+                        <!-- Informacao Cruz vermelha / parceria -->
+                        <div class="img">
+                            <img src="cruzfinal.png" style="width:100%" class="w3-hover-opacity">
+                        </div>
+                    </div>
+                    <div class="w3-row:after">
+                        <p><b>A Cruz Vermelha é uma instituicao humanitaria de utilidade publica destinada a defender a paz, garantir o respeito pela dignidade da pessoa Humana, menorizar os efeitos da guerra e promover a vida e a saude.</b></p>
+                        <p>Este projecto foi desenvolvido em parceria com a Cruz Vermelha com intuito de informar e precaver os banhistas das praias de Portugal sobre os perigos da radiacao ultravioleta.</p>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- END PARCERIA -->
+
+        <!-- CONTACT-->
+        <div class="w3-khaki" id="contact">
+            <div class="w3-container w3-content w3-padding-64 " style="max-width:800px " id="contact ">
+                <h2 class="w3-wide w3-center ">CONTACTO </h2>
+                <div class="w3-row w3-padding-32 ">
+                    <div class="w3-col m7 w3-large w3-margin-bottom ">
+                        <i class="fa fa-map-marker " style="width:30px "></i> Braamcamp, Lisboa<br>
+                        <i class="fa fa-phone " style="width:30px "></i> Phone: +351 915516936<br>
+                        <i class="fa fa-envelope " style="width:30px "> </i> Email: ricardoguerreiro214314@epad.edu.pt<br>
+                        <i class="fa fa-phone " style="width:30px "></i> Phone: +351 919148931<br>
+                        <i class="fa fa-envelope " style="width:30px "> </i> Email: fabiofernandes214315@epad.edu.pt<br>
+                    </div>
+                    <div class="w3-col m5">
+                        <form action="email.php " method="POST " target="_self ">
+                            <div class="w3-row-padding " style="margin:0 -16px 8px -16px ">
+                                <div class="w3-half ">
+                                    <input id="nome " class="w3-input w3-border " type="text " placeholder="Nome " required name="nome ">
+                                </div>
+                                <div class="w3-half ">
+                                    <input id="email " class="w3-input w3-border " type="text " placeholder="Email " required name="email ">
+                                </div>
+                            </div>
+                            <input id="message " class="w3-input w3-border " type="text " placeholder="Messagem " required name="message ">
+                            <button class="w3-btn w3-section w3-right " type="submit " name="submit " value="submit " id="submit ">SEND</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- END CONTACT -->
+
+        <!-- End Page -->
+    </div>
+
+
+
+
+    <!-- Footer -->
+    <div class="w3-khaki footer" id="footer ">
+        <footer id="footer " class="footer ">Fabio Fernandes & Ricardo Guerreiro © 2017 </footer>
+        <button onclick="topFunction()" id="btnTop" title="Go to top"><i class="fa fa-arrow-up"></i></button>
+        <script>
+            //show
+            window.onscroll = function() {
+                scrollFunction()
+            };
+
+            function scrollFunction() {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    document.getElementById("btnTop").style.display = "block";
+                } else {
+                    document.getElementById("btnTop").style.display = "none";
+                }
+            }
+
+            // Scroll when Clicked
+            function topFunction() {
+                document.body.scrollTop = 0; // For Chrome, Safari and Opera 
+                document.documentElement.scrollTop = 0; // For IE and Firefox
+            }
+
+        </script>
+
+    </div>
+
+
+</body>
+
+</html>
