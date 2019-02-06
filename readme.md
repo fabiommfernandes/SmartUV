@@ -9,7 +9,7 @@ December 2017
 
 ## Example
 
-<img style="max-width:100%; height: auto" src="https://gyazo.com/7eb59811e0efe8176618c16a48a21bed">
+<img style="max-width:100%; height: auto" src="https://github.com/fabiommfernandes/SmartUV/blob/master/smartUV.png">
 
 Our basic version of the SmartUV has the following options:
 
